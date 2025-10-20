@@ -1,9 +1,9 @@
-CTRL + O  → Enter → CTRL + X
 name: Build Mishu Music Player
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -20,13 +20,15 @@ jobs:
           distribution: 'temurin'
 
       - name: Install Gradle
-        uses: gradle/actions/setup-gradle@v3
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gradle
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug
+      - name: Build with Gradle
+        run: gradle assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: MishuMusicPlayer
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: MishuMusicPlayer-APK
+          path: app/build/outputs/apk/debug/
