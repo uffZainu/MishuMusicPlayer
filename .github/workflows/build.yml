@@ -2,8 +2,7 @@ name: Build Mishu Music Player
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
@@ -19,14 +18,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant execute permission for Gradle Wrapper
+      - name: Navigate to project directory
+        run: cd $GITHUB_WORKSPACE
+
+      - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle Wrapper
+      - name: Build APK
         run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: MishuMusicPlayer-APK
-          path: app/build/outputs/apk/debug/
+          name: MishuMusicPlayer
+          path: app/build/outputs/apk/debug/app-debug.apk
